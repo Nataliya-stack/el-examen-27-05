@@ -1,24 +1,24 @@
 // ==========================================
-// БЛОК 1: ОСНОВНЫЕ ЭЛЕМЕНТЫ КОНТЕНТА КВИЗА
+// ОСНОВНЫЕ ЭЛЕМЕНТЫ КОНТЕНТА КВИЗА
 // ==========================================
 const quizImage = document.getElementById('quizImage');
 const optionsContainer = document.getElementById('optionsContainer');
 
 // ==========================================
-// БЛОК 2: ИНФОРМАЦИОННЫЕ ПАНЕЛИ И СЧЕТЧИКИ
+// ИНФОРМАЦИОННЫЕ ПАНЕЛИ И СЧЕТЧИКИ
 // ==========================================
 const scoreDisplay = document.getElementById('scoreDisplay');
 const questionCounter = document.getElementById('questionCounter');
 
 // ==========================================
-// БЛОК 3: ПОЯСНЕНИЕ ОТВЕТА (ВЫПЛЫВАЮЩАЯ ПАНЕЛЬ)
+// ПОЯСНЕНИЕ ОТВЕТА (ВЫПЛЫВАЮЩАЯ ПАНЕЛЬ)
 // ==========================================
 const explanationBox = document.getElementById('explanationBox');
 const correctAnswerTitle = document.getElementById('correctAnswerTitle');
 const explanationText = document.getElementById('explanationText');
 
 // ==========================================
-// БЛОК 4: ГЛАВНЫЕ КНОПКИ УПРАВЛЕНИЯ И НАВИГАЦИИ
+// ГЛАВНЫЕ КНОПКИ УПРАВЛЕНИЯ И НАВИГАЦИИ
 // ==========================================
 const btnPrev = document.getElementById('btnPrev');
 const btnNext = document.getElementById('btnNext');
@@ -26,20 +26,20 @@ const btnFinish = document.getElementById('btnFinish');
 const btnViewResult = document.getElementById('btnViewResult');
 
 // ==========================================
-// БЛОК 5: АНИМАЦИЯ ПОЗДРАВЛЕНИЯ (GSAP ОВЕРЛЕЙ)
+// АНИМАЦИЯ ПОЗДРАВЛЕНИЯ (GSAP ОВЕРЛЕЙ)
 // ==========================================
 const gsapSuccessOverlay = document.getElementById('gsapSuccessOverlay');
 const gsapSuccessCard = document.getElementById('gsapSuccessCard');
 
 // ==========================================
-// БЛОК 6: МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ ВЫБОРА
+// МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ ВЫБОРА
 // ==========================================
 const confirmDialog = document.getElementById('confirmDialog');
 const dialogBtnYes = document.getElementById('dialogBtnYes');
 const dialogBtnNo = document.getElementById('dialogBtnNo');
 
 // ==========================================
-// БЛОК 7: МОДАЛЬНОЕ ОКНО ИТОГОВЫХ РЕЗУЛЬТАТОВ
+// МОДАЛЬНОЕ ОКНО ИТОГОВЫХ РЕЗУЛЬТАТОВ
 // ==========================================
 const resultDialog = document.getElementById('resultDialog');
 const resultModalScore = document.getElementById('resultModalScore');
@@ -47,22 +47,28 @@ const btnContinuePlaying = document.getElementById('btnContinuePlaying');
 const btnGoHomeFromResult = document.getElementById('btnGoHomeFromResult');
 
 // ==========================================
-// БЛОК 8: ФОРМА И ПОЛЕ ВВОДА ЭЛЕКТРОННОЙ ПОЧТЫ
+// ФОРМА И ПОЛЕ ВВОДА ЭЛЕКТРОННОЙ ПОЧТЫ
 // ==========================================
 const emailForm = document.getElementById('emailForm');
 const userEmailInput = document.getElementById('userEmail');
 
 // ==========================================
-// БЛОК 9: ОКНО УСПЕШНОЙ ОТПРАВКИ НА EMAIL
+// ОКНО УСПЕШНОЙ ОТПРАВКИ НА EMAIL
 // ==========================================
 const successDialog = document.getElementById('successDialog');
 const successMailText = document.getElementById('successMailText');
 const btnGoHomeFromSuccess = document.getElementById('btnGoHomeFromSuccess');
 
+// =================================================================
+// 1. СОСТОЯНИЕ ИГРЫ (ПЕРЕМЕННЫЕ)
+// =================================================================
 let currentQuestionIndex = 0; 
 let tempSelectedOptionIndex = null;
 let isQuizFinished = false; 
 
+// =================================================================
+// 2. ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ (ПОДСЧЕТ БАЛЛОВ)
+// =================================================================
 const calculateScore = () => {
   let count = 0;
   quizData.forEach((q) => { 
@@ -73,6 +79,9 @@ const calculateScore = () => {
   return count;
 };
 
+// =================================================================
+// 3. GSAP АНИМАЦИЯ ПОЗДРАВЛЕНИЯ
+// =================================================================
 const animateSuccessCard = () => { 
   gsap.set(gsapSuccessCard, { clearProps: "all" });
   gsap.set(gsapSuccessCard, { scale: 0, opacity: 0, rotationX: 0, rotationY: 0, rotation: 0, y: 0 });
@@ -107,6 +116,9 @@ const animateSuccessCard = () => {
   });
 };
 
+// =================================================================
+// 4. ФУНКЦИЯ ОТРИСОВКИ ВОПРОСА И ВАРИАНТОВ ОТВЕТА
+// =================================================================
 const loadQuestion = (index) => {
   const currentQ = quizData[index]; 
   tempSelectedOptionIndex = null;
@@ -175,6 +187,9 @@ const loadQuestion = (index) => {
   scoreDisplay.innerText = `Puntuación ${calculateScore()} / ${quizData.length}`;
 };
 
+// =================================================================
+// 5. ОБРАБОТЧИКИ КЛИКОВ И МОДАЛЬНЫХ ОКON
+// =================================================================
 const handleOptionSelect = (optIndex, clickedButton) => {
   tempSelectedOptionIndex = optIndex; 
   
@@ -250,6 +265,9 @@ const handleEmailSubmit = () => {
   successDialog.showModal();
 };
 
+// =================================================================
+// 6. СБОРКА И ИНИЦИАЛИЗАЦИЯ СЛУШАТЕЛЕЙ СОБЫТИЙ (СТАРТ)
+// =================================================================
 const initQuiz = () => {
   loadQuestion(0); 
   
@@ -297,4 +315,7 @@ const initQuiz = () => {
   });
 };
 
+// =================================================================
+// 7. ЗАПУСК ПРИЛОЖЕНИЯ
+// =================================================================
 initQuiz();
