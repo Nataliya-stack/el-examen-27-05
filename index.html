@@ -13,6 +13,25 @@
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
+      /* Фиксируем цвета для телефонов с включенной темной темой */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #eaeef2 !important;
+    }
+    .bg-gradient-to-br, .bg-linear-to-b {
+      background: linear-gradient(to bottom, #fefefe, #dae2e9) !important;
+    }
+    h2, h3, h4, span, p {
+      color: #1e293b !important; /* Возвращаем темный текст */
+    }
+    button.bg-white {
+      background-color: #ffffff !important;
+      color: #1e293b !important;
+    }
+    #scoreDisplay, #questionCounter {
+      color: #1e293b !important;
+    }
+  }
     }
   </style>
 </head>
