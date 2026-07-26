@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="shortcut icon" href="shopping-cart.svg" type="image/svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <title>Cuestionario Gastronómico Premium</title>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-[#eaeef2] min-h-screen flex items-center justify-center p-4 md:p-6 antialiased relative">
+
+  <!-- Главная градиентная плашка -->
+  <div class="bg-linear-to-b from-[#fefefe] to-[#dae2e9] max-w-5xl w-full p-6 md:p-10 rounded-[40px] shadow-sm border border-[#dae2e9] overflow-hidden">
+    
+    <!-- Шапка -->
+    <div class="border-b border-[#dae2e9] pb-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+      <div id="scoreBlock" class="text-xl md:text-2xl text-slate-800 text-center sm:text-left">
+        <span id="scoreDisplay">Puntuación 0 / 10</span>
+      </div>
+      
+      <!-- Кнопки -->
+      <div id="topButtonsBlock" class="text-center sm:text-right flex justify-center sm:justify-end">
+        <div class="inline-flex rounded-full bg-[#2d3a4b] p-0.5 shadow-md border border-[#1a232f]">
+          <button id="btnViewResult" class="px-6 py-2.5 hover:bg-[#1a232f] text-white text-base rounded-l-full transition cursor-pointer border-r-2 border-[#eaeef2]">
+            Ver resultado
+          </button>
+          <button id="btnFinish" class="px-6 py-2.5 hover:bg-[#1a232f] text-white text-base rounded-r-full transition cursor-pointer">
+            Terminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Вопросы -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-6">
+      <div id="leftImageContainer" class="lg:col-span-5 overflow-hidden rounded-3xl h-64 md:h-85 shadow-sm border border-[#dae2e9]">
+        <img id="quizImage" src="" alt="Ilustración" class="w-full h-full object-cover">
+      </div>
+      
+      <div id="rightContentBlock" class="lg:col-span-7 space-y-5">
+        <h3 id="questionText" class="text-xl md:text-2xl text-slate-800 leading-tight">¿A qué país pertenece este plato?</h3>
+        <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      </div>
+    </div>
+
+    <!-- Навигация -->
+    <div id="bottomNavBlock" class="flex items-center justify-between gap-4 pt-4 border-t border-[#dae2e9]/60 w-full">
+      <button id="btnPrev" class="px-6 py-3 bg-white text-[#2d3a4b] rounded-full border border-[#dae2e9] hover:bg-slate-50 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed select-none">
+        Anterior
+      </button>
+      <span id="questionCounter" class="text-lg text-slate-700">1 / 10</span>
+      <button id="btnNext" class="px-6 py-3 bg-white text-[#2d3a4b] rounded-full border border-[#dae2e9] hover:bg-slate-50 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed select-none">
+        Siguiente
+      </button>
+    </div>
+
+    <!-- Раздел объяснения -->
+    <div id="explanationBox" class="hidden border-t border-[#dae2e9] pt-5 mt-6 space-y-2">
+      <h4 id="correctAnswerTitle" class="text-xl text-[#2d3a4b] tracking-wider uppercase">País Correcto</h4>
+      <p id="explanationText" class="text-slate-600 text-base md:text-lg leading-relaxed"></p>
+    </div>
+  </div>
+
+  <!-- Оверлей поздравления GSAP -->
+  <div id="gsapSuccessOverlay" class="fixed inset-0 bg-slate-900/40 z-50 items-center justify-center hidden pointer-events-none">
+    <div id="gsapSuccessCard" class="bg-linear-to-b from-[#fefefe] to-[#dae2e9] p-10 rounded-4xl border border-[#dae2e9] text-center shadow-2xl max-w-sm w-full opacity-0 scale-0">
+      <div class="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-700 text-3xl font-light">✓</div>
+      <h2 class="text-3xl font-light text-slate-800 mb-2">¡Correcto!</h2>
+      <p class="text-lg text-slate-600 font-medium">¡Felicitaciones! Has acertado el país.</p>
+    </div>
+  </div>
+
+  <!-- Dialog 1: Подтверждение ответа -->
+  <dialog id="confirmDialog" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-slate-900/20 p-8 rounded-3xl shadow-2xl max-w-md w-full bg-white border border-[#dae2e9]">
+    <div class="text-center space-y-5">
+      <p class="text-slate-800 font-bold text-lg">¿Está seguro de su respuesta? Una vez confirmada, no podrá cambiarse.</p>
+      <div class="flex justify-center gap-4 pt-2">
+        <button id="dialogBtnYes" class="px-6 py-2.5 bg-[#2d3a4b] hover:bg-[#1a232f] text-white rounded-full transition cursor-pointer shadow-sm">Sí, confirmar</button>
+        <button id="dialogBtnNo" class="px-6 py-2.5 bg-slate-400 hover:bg-slate-500 text-white rounded-full transition cursor-pointer shadow-sm">No, revisar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Dialog 2: Крупный счет -->
+  <dialog id="resultDialog" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-slate-900/20 p-8 rounded-3xl shadow-2xl max-w-md w-full bg-white border border-[#dae2e9]">
+    <div class="text-center space-y-4">
+      <h2 class="text-2xl text-slate-800">Resultado Actual</h2>
+      
+      <!-- Результат отделен и увеличен до огромного красивого размера -->
+      <div class="py-4 my-2 border-y border-[#dae2e9]/60">
+        <p id="resultModalScore" class="text-5xl font-light text-[#2d3a4b]">0 / 10</p>
+      </div>
+      
+      <!-- Кнопка смотреть результат -->
+      <form id="emailForm" onsubmit="return false;" class="space-y-4">
+        <input id="userEmail" type="email" placeholder="ejemplo@mail.com" required class="w-full px-5 py-3 border-2 border-[#dae2e9] rounded-full focus:outline-none focus:ring-2 focus:ring-[#2d3a4b] text-center text-lg bg-slate-50">
+        
+        <div class="flex flex-col gap-2 pt-2">
+          <button type="submit" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-full transition cursor-pointer shadow-md">
+            Enviar por correo
+          </button>
+          <!-- Новая кнопка: Продолжить играть (закрывает окно) -->
+          <button id="btnContinuePlaying" type="button" class="w-full py-3 bg-white text-[#2d3a4b] border border-[#dae2e9] hover:bg-slate-50 rounded-full transition cursor-pointer shadow-sm">
+            Continuar jugando
+          </button>
+          <!-- Кнопка: Вернуться в начало -->
+          <button id="btnGoHomeFromResult" type="button" class="w-full py-3 bg-slate-400 hover:bg-slate-500 text-white rounded-full transition cursor-pointer shadow-md">
+            Volver al inicio
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Dialog 3: Успешная отправка -->
+  <dialog id="successDialog" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-slate-900/20 p-8 rounded-3xl shadow-2xl max-w-md w-full bg-white border border-[#dae2e9]">
+    <div class="text-center space-y-5">
+      <h2 class="text-2xl text-slate-800">¡Envío Exitoso!</h2>
+      <p id="successMailText" class="text-base text-slate-600">Sus respuestas y la calificación ha sido enviada a [correo].</p>
+      <button id="btnGoHomeFromSuccess" class="w-full py-3 bg-[#2d3a4b] hover:bg-[#1a232f] text-white rounded-full transition cursor-pointer shadow-md">
+        Volver al inicio
+      </button>
+    </div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="/js/questions.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
+
+  
