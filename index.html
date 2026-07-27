@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" style="color-scheme: light;">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="shortcut icon" href="shopping-cart.svg" type="image/svg">
@@ -13,25 +12,7 @@
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      }
-    /* Фиксируем цвета для телефонов с включенной темной темой */
-    @media (prefers-color-scheme: dark) {
-      html {
-        color-scheme: light !important;
-      }
-      body {
-        background-color: #eaeef2 !important;
-        color: #1e293b !important;
-      }
-      button.bg-white {
-        background-color: #ffffff !important;
-        color: #1e293b !important;
-      }
-    }
-    html[style*="color-scheme: dark"] body, 
-    html[data-user-color-scheme="dark"] body {
-      background-color: #eaeef2 !important;
-    }
+      }   
   </style>
 </head>
 <body class="bg-[#eaeef2] min-h-screen flex items-center justify-center p-4 md:p-6 antialiased relative">
